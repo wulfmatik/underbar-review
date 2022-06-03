@@ -115,6 +115,8 @@
     var result = [];
     var transformed = [];
 
+    var iterator = iterator || _.identity;
+
     if (iterator === undefined) {
       _.each(array, function(item) {
         if (result.indexOf(item) < 0) {
@@ -124,12 +126,16 @@
     } else {
       _.each(array, function(item) {
         //var transformedItem = iterator(item);
+        //console.log(transformed.indexOf(iterator(item)))
+        //console.log(item)
         if (transformed.indexOf(iterator(item)) < 0) {
+          console.log(iterator(item))
           transformed.push(iterator(item));
           result.push(item);
         }
       });
     }
+    console.log(transformed, 'array')
     return result;
   };
 
