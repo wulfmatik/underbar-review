@@ -202,7 +202,7 @@
         accumulator = iterator(accumulator, item);
       }
     });
-    console.log(accumulator);
+
     return accumulator;
 
   };
@@ -333,6 +333,8 @@
   _.memoize = function(func) {
     var result = {};
     return function(arg) {
+      //stringigy the argument and store property
+      var arg = JSON.stringify(arguments);
       if (result[arg] === undefined) {
         result[arg] = func.apply(this, arguments);
         return result[arg];
@@ -350,8 +352,12 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
-    // get the arguments other than func and wait
-    setTimeout(code, delay);
+    //get the argument
+    var args = Array.prototype.slice.call(arguments, 2);
+    //call after waiting
+    setTimeout(function() {
+      func.apply(this, args);
+    }, wait);
   };
 
 
@@ -366,6 +372,18 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    // create result variable
+    var result = array.slice();
+
+    // iterate over the array
+    for (var i = 0; i < result.length; i++) {
+      // get a random number between i and result.length
+      var num = Math.floor(Math.random() * (result.length - i) + i);
+      var holder = result[num];
+      result[num] = result[i];
+      result[i] = holder;
+    }
+    return result;
   };
 
 
